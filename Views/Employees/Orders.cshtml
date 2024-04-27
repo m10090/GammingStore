@@ -1,0 +1,32 @@
+@{
+  ViewBag.title = "Orders";
+}
+@model IEnumerable<gammingStore.Models.Order>
+<div class="container">
+<table class="table table-striped">
+<thead>
+  <tr>
+    <th>Order ID</th>
+    <th>Username</th>
+    <th>Product Name</th>
+    <th>Quantity</th>
+    <th>Price</th>
+    <th>Order Date</th>
+</thead>
+<tbody>
+@foreach(var item in Model){
+<tr>
+  <td>@item.Id</td>
+  <td>@item.UserName</td>
+  <td>@item.ProductName</td>
+  <td>@item.Quantity</td>
+  <td>@item.Price</td>
+  <td>@item.TranscationDate</td>
+</tr>
+  
+
+
+
+}
+</tbody>
+</table>

@@ -1,0 +1,26 @@
+@{
+  ViewBag.Title = "Products";
+}
+@model IEnumerable<gammingStore.Models.Product>
+@foreach(var item in Model){
+    <div class="card" style="width: 18rem;">
+        <img  class="card-img-top" alt="...">
+        <div class="card-body">
+            <h3 class="card-title" style="color: black;">
+              @item.Name
+            </h3>
+            <p class="card-text" style="color: black;">
+              @item.Description
+            </p>
+            <h5 class="card-title" style="color: black;">
+              @item.Price
+            </h5>
+            <h6 class="card-title" style="color: black;">
+              @item.Stock
+            </h6>
+            <a href="/Employees/EditProduct/@item.ProductId" class="btn btn-primary">Edit</a>
+            <a href="/Employees/EditProduct/@item.ProductId" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+}
+<ahref="/Employees/AddProduct" class="btn btn-primary">Add Product</a>

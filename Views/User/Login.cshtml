@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Login";
+
+}
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
+<div id="lgIn" class="form-group">
+  <label for="username">Username</label>
+  <input name="username" type="text"/>
+  <br>
+  <label for="password">password</label> 
+  <input type="password"  name="password" />
+  <br>
+  <button onclick="Login()" class="btn btn-primary">Login</button>
+</div>
+<h3>Don't have an account?</h3>
+<a href="/User/Register" class="btn btn-secondary">sign up</a>
+
+<script>
+  function Login(){
+    const username = document.querySelector('#lgIn input[name="username"]').value;
+    const password = document.querySelector('#lgIn input[name="password"]').value;
+    @if(Environment.IsDevelopment())
+    {
+      <text>
+        console.log(username);
+        console.log(password);
+      </text>
+    }
+    fetch('/User/Login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+    })
+    .then(data => {
+      if(data.status === 200){
+        alert('Login successful');
+        window.location.href = '/User';
+      }
+      else{
+        alert('Login failed');
+      }
+    })
+  }
+</script>
