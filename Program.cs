@@ -46,7 +46,7 @@ builder.Services?
 builder.Services?.AddAuthorization(options =>
 {
     options.AddPolicy("Employees",
-                      policy => policy.RequireClaim(ClaimTypes.Role, "Employees",
+                      policy => policy.RequireClaim(ClaimTypes.Role, "Employee",
                                                     "Admin", "Manager", "Owner",
                                                     "Accountant", "HR", "Sales"));
     options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role,
