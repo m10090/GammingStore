@@ -38,6 +38,7 @@
 
 
 <script>
+  'use strict'
   function Register(){
     const fullName = document.querySelector('#regForm input[name="FullName"]').value;
     const email = document.querySelector('#regForm input[name="Email"]').value;
@@ -80,7 +81,7 @@
         })
       })
       .then(data => {
-        if(data.success){
+        if(data.status === 200){
           alert('Registration successful');
           window.location.href = "/User/Login";
         }
