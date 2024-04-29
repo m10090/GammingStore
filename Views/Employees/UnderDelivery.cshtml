@@ -1,0 +1,15 @@
+@{
+  
+}
+@model List<gammingStore.Models.Order>
+
+
+@foreach(var item in Model){
+  <div>
+    <h3>@item.Id</h3>
+    <h3>@item.Price</h3>
+    <h3>@item.ProductName</h3>
+    <a href="/Employees/Delivered/@item.Id"> Delivered? </a>
+  </div>
+
+}

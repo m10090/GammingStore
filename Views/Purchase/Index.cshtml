@@ -6,19 +6,20 @@
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Price</th>
+                <th>total</th>
                 <th>Change Quantity</th>
             </tr>
         </thead>
         <tbody id="cartItems">
         </tbody>
     </table>
+    <h3>
+      Total Cost: <span id="totalCost"></span></h3>
     <button class="btn btn-primary" onclick="checkout()">Checkout</button>
     
 </div>
 <script>
-  setTimeout(() => {
-    load()
-  }, 1000)
+  load()
   function checkout(){
     fetch('/Purchase/Checkout', {
       method: 'POST',
@@ -34,7 +35,8 @@
       }
       else{
         console.log(response)
-        response.json().then((x) => alert(x.message))
+        response.json().then((x) =>
+          alert(x.message + ' Total cost mesured in EGP: ' + x.totalCost))
         localStorage.removeItem('cart')
         window.location.href = '/Home'
       }
@@ -55,8 +57,10 @@
         response.json().then((x) => alert(x.message))
       }
       else{
-        response.json().then((x) => {
+        response.json()
+          .then((x) => {
           const tbody = document.getElementById('cartItems')
+          let totalCost = 0
           tbody.innerHTML = ''
           x.forEach(item => {
             const tr = document.createElement('tr')
@@ -67,14 +71,19 @@
             const td3 = document.createElement('td')
             td3.textContent = item.price
             const td4 = document.createElement('td')
-            td4.innerHTML = `<button class="btn btn-success" onclick="increaseQuantity(${item.id})"> + </button>
+            td4.textContent = item.price * item.quantity
+            const td5 = document.createElement('td')
+            td5.innerHTML = `<button class="btn btn-success" onclick="increaseQuantity(${item.id})"> + </button>
               <button class="btn btn-danger" onclick="decreaseQuantity(${item.id})"> - </button>`
             tr.appendChild(td1)
             tr.appendChild(td2)
             tr.appendChild(td3)
             tr.appendChild(td4)
+            tr.appendChild(td5)
             tbody.appendChild(tr)
+            totalCost += item.price * item.quantity
           })
+          document.getElementById('totalCost').textContent = totalCost;
         })
       }
       }

@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@{
+  bool isAuthenticated = User.Identity != null && User.Identity.IsAuthenticated;
+  bool isEmployee = isAuthenticated && (User.IsInRole("Employee")
+   || User.IsInRole("Admin")
+   || User.IsInRole("Manager")
+   || User.IsInRole("Owner")
+   || User.IsInRole("HR")
+   || User.IsInRole("Accountant")
+   || User.IsInRole("Sales"));
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,13 +36,23 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                          @if(User.Identity.IsAuthenticated){
+                          @if(isAuthenticated){
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">@User.Identity.Name</a>
                           }
                           else{
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                           }
                         </li>
+                          @if(isAuthenticated){
+                          <li class="nav-item" >
+                            <a class="nav-link text-dark"
+                              asp-area="" asp-controller="Purchase" asp-action="Index">Cart</a>
+                          </li>
+                          }
+                        <li class="nav-item">
+                          @if(isEmployee){
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Employee</a>
+                          }
                     </ul>
                 </div>
             </div>

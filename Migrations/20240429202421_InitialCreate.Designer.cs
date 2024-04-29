@@ -11,7 +11,7 @@ using gammingStore.Data;
 namespace gammingStore.Migrations
 {
     [DbContext(typeof(DB))]
-    [Migration("20240427112415_InitialCreate")]
+    [Migration("20240429202421_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -76,6 +76,10 @@ namespace gammingStore.Migrations
 
                     b.HasIndex("Delivered");
 
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Historys");
                 });
 
@@ -115,6 +119,25 @@ namespace gammingStore.Migrations
                         .IsUnique();
 
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("gammingStore.Models.TranscationHistory", b =>
+                {
+                    b.HasOne("gammingStore.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("gammingStore.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

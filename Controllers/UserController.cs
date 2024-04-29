@@ -119,6 +119,10 @@ public class UserController : Controller {
       Role = "User",
       Address = user.Address,
     };
+    if (db.users.Any((x) => x.Username.ToLower() == user.Username.ToLower())) {
+      return StatusCode(
+          406, new MessageResponse { Message = "Username is allready taken" });
+    }
 
     db.users.Add(userObj);
     db.SaveChangesAsync();
@@ -160,7 +164,8 @@ public class UserController : Controller {
 
   [HttpPost]
   [Authorize]
-  public IActionResult ChangePassword([FromBody] ChangePasswordDTO user) {
+  public ActionResult<MessageResponse>
+  ChangePassword([FromBody] ChangePasswordDTO user) {
     if (User.Identity?.Name == null) {
       return RedirectToAction("Login");
     }

@@ -1,12 +1,16 @@
 @{
   ViewBag.Title = "Admin";
+  bool isAdmin = User != null && (User.IsInRole("Admin") || User.IsInRole("Owner"));
 }
 <div>
   <h1>Admin</h1>
   <p>Welcome to the Admin page</p>
   <a href="/Employees/Products">Products</a>
-  <a href="/Employees/Users">Users</a>
+  @if(isAdmin) {
+    <a href="/Employees/Users">Users</a>
+  }
   <a href="/Employees/Orders">Orders</a>
+  <a href="/Employees/UnderDelivery">Under delivery</a>
   @* to be implemented later *@
   <!-- <a href="/Admin/Reports">Reports</a> -->
   <a href="/User/Logout">Logout</a>

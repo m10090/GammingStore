@@ -5,16 +5,15 @@
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
 <div id="lgIn" class="form-group">
   <label for="username">Username</label>
-  <input name="username" type="text"/>
+  <input name="username" type="text" required/>
   <br>
   <label for="password">password</label> 
-  <input type="password"  name="password" />
+  <input type="password"  name="password" required/>
   <br>
-  <button onclick="Login()" class="btn btn-primary">Login</button>
+  <button onclick="Login()" class="btn btn-primary" required>Login</button>
 </div>
 <h3>Don't have an account?</h3>
 <a href="/User/Register" class="btn btn-secondary">sign up</a>
-
 <script>
   function Login(){
     const username = document.querySelector('#lgIn input[name="username"]').value;

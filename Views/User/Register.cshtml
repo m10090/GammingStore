@@ -1,21 +1,39 @@
 @{
+    ViewData["Title"] = "Create Account";
   
 }
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
 <div id="regForm">
-  <label for="fullName">Full Name</label>
-  <input name="FullName" type="text"/>
-  <label for="Email">Email</label>
-  <input name="Email" type="email" required/>
-  <label for="Username">Username</label>
-  <input name="Username" type="text" required/>
-  <label for="Password">password</label> 
-  <input name="Password" type="password"  required/>
-  <label for="ConfirmPassword">Confirm Password</label>
-  <input name="ConfirmPassword" type="password" required/>
-  <label for="Address">Address</label>
-  <input name="Address" type="text" required/>
-  <button onclick="Register()">Register</button>
+  <div clase="form-group">
+    <label for="fullName">Full Name</label>
+    <br>
+    <input name="FullName" type="text" required/>
+  </div>
+  <div clase="form-group">
+    <label for="Email">Email</label>
+    <br>
+    <input name="Email" type="email" required/>
+  </div>
+  <div clase="form-group">
+    <label for="Username">Username</label>
+    <br>
+    <input name="Username" type="text" required/>
+  </div>
+  <div clase="form-group">
+    <label for="Password">password</label> 
+    <br>
+    <input name="Password" type="password"  required/>
+  </div>
+  <div clase="form-group">
+    <label for="ConfirmPassword">Confirm Password</label>
+    <br>
+    <input name="ConfirmPassword" type="password" required/>
+  </div>
+  <div clase="form-group">
+    <label for="Address">Address</label> <br>
+    <input name="Address" type="text" required/>
+  </div>
+    <button onclick="Register()">Register</button>
 </div>
 
 
@@ -64,11 +82,11 @@
       .then(data => {
         if(data.success){
           alert('Registration successful');
-          window.location.href = '/User/Login';
+          window.location.href = "/User/Login";
         }
         else {
           data.json().then(data => {
-            alert(data.message);
+            alert(data.Message);
           })
         }
       })

@@ -484,3 +484,5 @@ $RECYCLE.BIN/
 *.swp
 # database (sqlite) files
 Data.db
+# remove all the files in wwwroot / images
+wwwroot/images/ *

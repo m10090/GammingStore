@@ -1,7 +1,7 @@
 using gammingStore.Data;
-using Microsoft.AspNetCore.Identity;
 using gammingStore.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gammingStore.Controllers;
@@ -9,11 +9,10 @@ namespace gammingStore.Controllers;
 [Authorize(Policy = "Employees")]
 public partial class EmployeesController {
   private readonly DB db = null!;
-  private readonly PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
+  private readonly PasswordHasher<User> passwordHasher =
+      new PasswordHasher<User>();
 
-  public EmployeesController(DB db) {
-    this.db = db;
-  }
+  public EmployeesController(DB db) { this.db = db; }
 
   // Views for Employees
   public IActionResult Index() { return View(); }
@@ -22,15 +21,17 @@ public partial class EmployeesController {
     var users = db.users.Take(10).ToList();
     return View(users);
   }
+
   [HttpGet("Employees/EditProduct/{id}")]
   public IActionResult EditProduct(int id) {
     var product = db.products.FirstOrDefault(p => p.ProductId == id);
     return View(product);
   }
+
   [HttpGet("Employees/EditUsers/{id}")]
-  public IActionResult EditUsers(int id) { 
+  public IActionResult EditUsers(int id) {
     var user = db.users.FirstOrDefault(p => p.UserId == id);
-    return View(user); 
+    return View(user);
   }
 
   public IActionResult Products() {
@@ -57,9 +58,8 @@ public partial class EmployeesController {
     return View(orders);
   }
 
-  public IActionResult AddUser() {
-    return View();
-  }
+  [Authorize(Policy = "Admin")]
+  public IActionResult AddUser() { return View(); }
 
   [HttpGet("Employees/DeleteProduct/{id}")]
   public IActionResult DeleteProduct(int id) {
@@ -74,4 +74,31 @@ public partial class EmployeesController {
   }
 
   public IActionResult AddProduct() { return View(); }
+
+  public IActionResult UnderDelivery() {
+    var undelivered =
+        db.Historys.Where((x) => !x.Delivered)
+            .Join(db.users, h => h.UserId, u => u.UserId, (h, u) => new { h, u })
+            .Join(db.products, hu => hu.h.ProductId, p => p.ProductId,
+                  (hu, p) => new { hu, p })
+            .Select(x => new Order { Id = x.hu.h.Id, UserName = x.hu.u.Username,
+                                     ProductName = x.p.Name, Price = x.p.Price })
+            .ToList();
+
+    return View(undelivered);
+  }
+  [HttpGet("Employees/Delivered/{id}")]
+  public IActionResult Delivered(int id) {
+    var historyObj= db.Historys.FirstOrDefault(x => x.Id == id);
+    if (historyObj == null) {
+      return NotFound("Order not found");
+    }
+    if (historyObj.Delivered) {
+      return BadRequest("Order already delivered");
+    }
+    historyObj.Delivered = true;
+    db.Historys.Update(historyObj);
+    db.SaveChanges();
+    return RedirectToAction("UnderDelivery");
+  }
 }
