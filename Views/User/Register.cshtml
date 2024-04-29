@@ -6,15 +6,15 @@
   <label for="fullName">Full Name</label>
   <input name="FullName" type="text"/>
   <label for="Email">Email</label>
-  <input name="Email" type="email"/>
+  <input name="Email" type="email" required/>
   <label for="Username">Username</label>
-  <input name="Username" type="text"/>
+  <input name="Username" type="text" required/>
   <label for="Password">password</label> 
-  <input name="Password" type="password"/>
+  <input name="Password" type="password"  required/>
   <label for="ConfirmPassword">Confirm Password</label>
-  <input name="ConfirmPassword" type="password"/>
+  <input name="ConfirmPassword" type="password" required/>
   <label for="Address">Address</label>
-  <input name="Address" type="text"/>
+  <input name="Address" type="text" required/>
   <button onclick="Register()">Register</button>
 </div>
 
@@ -40,10 +40,10 @@
       alert('passwords do not match');
       return;
     }
-    if (password.length < 8 && password.match(/[0-9]/) 
+    if (!(password.length > 8 && password.match(/[0-9]/) 
       && (/[A-Z]/).test(password) 
       && (/[a-z]/).test(password)
-      && (/[!#$%^&*()_+@("@")]/).test(password)){
+      && (/[!#$%^&*()_+@("@")]/).test(password))){
       alert('password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character');
       return;
     }

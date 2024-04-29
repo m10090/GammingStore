@@ -15,7 +15,7 @@ public class HomeController : Controller {
   }
 
   public IActionResult Index() {
-    var products = db.products.ToList();
+    var products = db.products.Where((x)=> !x.IsDeleted).ToList();
     return View(products);
   }
 

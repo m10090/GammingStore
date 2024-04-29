@@ -1,20 +1,42 @@
 using gammingStore.Data;
+using Microsoft.AspNetCore.Identity;
 using gammingStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gammingStore.Controllers;
 
-[Authorize("Employees")]
-public partial class EmployeesController : Controller {
-  private readonly DB db;
+[Authorize(Policy = "Employees")]
+public partial class EmployeesController {
+  private readonly DB db = null!;
+  private readonly PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
 
-  public EmployeesController(DB db) { this.db = db; }
+  public EmployeesController(DB db) {
+    this.db = db;
+  }
 
   // Views for Employees
   public IActionResult Index() { return View(); }
 
-  public IActionResult Products() { return View(); }
+  public IActionResult Users() {
+    var users = db.users.Take(10).ToList();
+    return View(users);
+  }
+  [HttpGet("Employees/EditProduct/{id}")]
+  public IActionResult EditProduct(int id) {
+    var product = db.products.FirstOrDefault(p => p.ProductId == id);
+    return View(product);
+  }
+  [HttpGet("Employees/EditUsers/{id}")]
+  public IActionResult EditUsers(int id) { 
+    var user = db.users.FirstOrDefault(p => p.UserId == id);
+    return View(user); 
+  }
+
+  public IActionResult Products() {
+    var products = db.products.Where((x) => !x.IsDeleted).ToList();
+    return View(products);
+  }
 
   public IActionResult Orders() {
     var orders = db.Historys
@@ -35,11 +57,10 @@ public partial class EmployeesController : Controller {
     return View(orders);
   }
 
-  [HttpGet("Employees/EditProduct/{id}")]
-  public IActionResult EditProduct(int id) {
-    var product = db.products.FirstOrDefault(p => p.ProductId == id);
-    return View(product);
+  public IActionResult AddUser() {
+    return View();
   }
+
   [HttpGet("Employees/DeleteProduct/{id}")]
   public IActionResult DeleteProduct(int id) {
     var product = db.products.FirstOrDefault(p => p.ProductId == id);
@@ -51,8 +72,6 @@ public partial class EmployeesController : Controller {
     db.SaveChanges();
     return RedirectToAction("Products");
   }
-  [HttpGet("Employees/AddProduct")]
+
   public IActionResult AddProduct() { return View(); }
-
-
 }

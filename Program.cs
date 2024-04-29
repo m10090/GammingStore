@@ -3,7 +3,6 @@ using gammingStore.Data;
 using gammingStore.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,15 +15,15 @@ builder.Services.AddDbContext<DB>();
 
 // add admin to database
 var db = builder.Services.BuildServiceProvider().GetService<DB>();
-if (db.users.FirstOrDefault(u => u.Username == "admin") == null) {
-  var admin = new User {
-  };
+if (db != null && db.users.FirstOrDefault(u => u.Username == "admin") == null) {
+  var admin = new User {};
   builder.Configuration.GetSection("Admin").Bind(admin);
   var passwordHasher = new PasswordHasher<User>();
   admin.Password = passwordHasher.HashPassword(admin, admin.Password);
   db.users.Add(admin);
   db.SaveChanges();
 }
+
 // PasswordHasher
 builder.Services.AddScoped<PasswordHasher<User>>();
 
@@ -39,15 +38,12 @@ builder.Services
 
 // add policy
 builder.Services.AddAuthorization(options => {
-  options.AddPolicy("Employees", policy => {
-    policy.RequireClaim(ClaimTypes.Role, "Employees");
-    policy.RequireClaim(ClaimTypes.Role, "Admin");
-    policy.RequireClaim(ClaimTypes.Role, "Manager");
-    policy.RequireClaim(ClaimTypes.Role, "Owner");
-    policy.RequireClaim(ClaimTypes.Role, "Accountant");
-    policy.RequireClaim(ClaimTypes.Role, "HR");
-    policy.RequireClaim(ClaimTypes.Role, "Sales");
-  });
+  options.AddPolicy("Employees",
+                    policy => policy.RequireClaim(ClaimTypes.Role, "Employees",
+                                                  "Admin", "Manager", "Owner",
+                                                  "Accountant", "HR", "Sales"));
+  options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role,
+                                                           "Admin","Owner"));
 });
 var app = builder.Build();
 

@@ -1,3 +1,3 @@
 namespace gammingStore.Models;
 
-public record RegisterDTO : User {}
+public record UserDTO : User {}

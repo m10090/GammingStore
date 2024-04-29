@@ -40,9 +40,16 @@ public class UserController : Controller {
     }
 
     var claims = new List<Claim> { new Claim(ClaimTypes.Name, userObj.Username),
+                                   new Claim(ClaimTypes.NameIdentifier,
+                                             userObj.UserId.ToString()),
                                    new Claim(ClaimTypes.Role, userObj.Role) };
     var Identity = new ClaimsIdentity(
         claims, CookieAuthenticationDefaults.AuthenticationScheme);
+    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ==
+        "Development") {
+      Console.WriteLine("Development");
+      Console.WriteLine(userObj.Role);
+    }
     var principal = new ClaimsPrincipal(Identity);
     var authProperties = new AuthenticationProperties {
       IsPersistent = true,
@@ -63,7 +70,13 @@ public class UserController : Controller {
   // userProfile
   [Authorize]
   public IActionResult Index() {
+    if (User.Identity?.Name == null) {
+      return RedirectToAction("Login");
+    }
     var user = db.users.FirstOrDefault(u => u.Username == User.Identity.Name);
+    if (user == null) {
+      return RedirectToAction("Login");
+    }
     var orders = db.Historys
                      .Join(db.products, h => h.ProductId, p => p.ProductId,
                            (h, p) => new { h, p })
@@ -79,13 +92,13 @@ public class UserController : Controller {
                      .OrderByDescending((x) => x.TranscationDate)
                      .Take(5)
                      .ToList();
-    return View();
+    return View(orders);
   }
 
   public IActionResult Register() { return View(); }
 
   [HttpPost]
-  public ActionResult<MessageResponse> Register([FromBody] RegisterDTO user) {
+  public ActionResult<MessageResponse> Register([FromBody] UserDTO user) {
     // validation
     var regx = new Regex(@"[\[\]@-_!#$%^&*()<>?/\|}{~:]");
     if (user.Password.Length < 8 || !regx.IsMatch(user.Password) ||
@@ -99,7 +112,7 @@ public class UserController : Controller {
 
     user.Password = passwordHasher.HashPassword(user, user.Password);
     var userObj = new User {
-      Username = user.Username,
+      Username = user.Username.ToLower(),
       Password = user.Password,
       FullName = user.FullName,
       Email = user.Email,
@@ -110,6 +123,61 @@ public class UserController : Controller {
     db.users.Add(userObj);
     db.SaveChangesAsync();
     return Ok(new MessageResponse { Message = "User created successfully" });
+  }
+
+  [Authorize]
+  public IActionResult EditProfile() {
+    if (User.Identity?.Name == null) {
+      return RedirectToAction("Login");
+    }
+    var user = db.users.FirstOrDefault(u => u.Username ==
+                                            User.Identity.Name.ToLower());
+    return View(user);
+  }
+
+  [HttpPost]
+  [Authorize]
+  public IActionResult EditProfile([FromForm] UserDTO user) {
+    if (User.Identity?.Name == null) {
+      return RedirectToAction("Login");
+    }
+    var userObj = db.users.FirstOrDefault(u => u.Username ==
+                                               User.Identity.Name.ToLower());
+    if (userObj == null) {
+      return RedirectToAction("Login");
+    }
+    userObj.FullName = user.FullName;
+    userObj.Email = user.Email;
+    userObj.Address = user.Address;
+    userObj.Password = passwordHasher.HashPassword(userObj, userObj.Password);
+    db.users.Update(userObj);
+    db.SaveChanges();
+    return RedirectToAction("Index");
+  }
+
+  [Authorize]
+  public IActionResult ChangePassword() { return View(); }
+
+  [HttpPost]
+  [Authorize]
+  public IActionResult ChangePassword([FromBody] ChangePasswordDTO user) {
+    if (User.Identity?.Name == null) {
+      return RedirectToAction("Login");
+    }
+    var userObj = db.users.FirstOrDefault(u => u.Username ==
+                                               User.Identity.Name.ToLower());
+    if (userObj == null) {
+      return RedirectToAction("Login");
+    }
+    if (passwordHasher.VerifyHashedPassword(userObj, userObj.Password,
+                                            user.oldPassword) ==
+        PasswordVerificationResult.Success) {
+      userObj.Password = passwordHasher.HashPassword(userObj, user.newPassword);
+    }
+    db.users.Update(userObj);
+    db.SaveChanges();
+    return Ok(
+        new MessageResponse { Message = "Password changed successfully" });
   }
 }
 }

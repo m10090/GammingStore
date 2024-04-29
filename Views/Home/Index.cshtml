@@ -7,7 +7,7 @@
 
 @foreach(var item in Model){
     <div class="card" style="width: 18rem;">
-        <img  class="card-img-top" alt="...">
+        <img src="~/images/@(item.ProductId).jpeg" class="card-img-top" alt="...">
         <div class="card-body">
             <h3 class="card-title" style="color: black;">
               @item.Name
@@ -27,7 +27,15 @@
 }
 <script>
   function addToCart(id){
-    localStorage.setItem('cart', JSON.stringify({id: id, quantity: 1}))
+    const cart = JSON.parse(localStorage.getItem('cart')) ?? []
+    cart.forEach(item => {
+      if(item.id === id){
+        item.quantity++
+      }
     })
-  }
+    if(cart.find(item => item.id === id) === undefined){
+      cart.push({id, quantity: 1})
+    }
+    localStorage.setItem('cart', JSON.stringify(cart))
+    }
 </script>

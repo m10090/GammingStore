@@ -1,0 +1,107 @@
+<div class="container">
+    <h1>Cart</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Change Quantity</th>
+            </tr>
+        </thead>
+        <tbody id="cartItems">
+        </tbody>
+    </table>
+    <button class="btn btn-primary" onclick="checkout()">Checkout</button>
+    
+</div>
+<script>
+  setTimeout(() => {
+    load()
+  }, 1000)
+  function checkout(){
+    fetch('/Purchase/Checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body:localStorage.getItem('cart')
+    }).then(
+      (response) =>
+      {
+      if(response.status !== 200){
+        response.json().then((x) => alert(x.message))
+      }
+      else{
+        console.log(response)
+        response.json().then((x) => alert(x.message))
+        localStorage.removeItem('cart')
+        window.location.href = '/Home'
+      }
+      }
+    )
+  }
+  function load(){
+    fetch('/Purchase', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body:localStorage.getItem('cart')
+    }).then(
+      (response) =>
+      {
+      if(response.status !== 200){
+        response.json().then((x) => alert(x.message))
+      }
+      else{
+        response.json().then((x) => {
+          const tbody = document.getElementById('cartItems')
+          tbody.innerHTML = ''
+          x.forEach(item => {
+            const tr = document.createElement('tr')
+            const td1 = document.createElement('td')
+            td1.textContent = item.name
+            const td2 = document.createElement('td')
+            td2.textContent =item.quantity
+            const td3 = document.createElement('td')
+            td3.textContent = item.price
+            const td4 = document.createElement('td')
+            td4.innerHTML = `<button class="btn btn-success" onclick="increaseQuantity(${item.id})"> + </button>
+              <button class="btn btn-danger" onclick="decreaseQuantity(${item.id})"> - </button>`
+            tr.appendChild(td1)
+            tr.appendChild(td2)
+            tr.appendChild(td3)
+            tr.appendChild(td4)
+            tbody.appendChild(tr)
+          })
+        })
+      }
+      }
+    )
+  }
+  function increaseQuantity(id){
+    const cart = JSON.parse(localStorage.getItem('cart')) ?? []
+    cart.forEach(item => {
+      if(item.id === id){
+        item.quantity++
+      }
+    })
+    localStorage.setItem('cart', JSON.stringify(cart))
+    load()
+  }
+  function decreaseQuantity(id){
+    const cart = JSON.parse(localStorage.getItem('cart')) ?? []
+    cart.forEach(item => {
+      if(item.id === id){
+        item.quantity--
+      }
+      if (item.quantity === 0){
+        cart.splice(cart.indexOf(item), 1)
+      }
+    })
+    localStorage.setItem('cart', JSON.stringify(cart))
+    load()
+  }
+</script>
+
