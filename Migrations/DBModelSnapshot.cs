@@ -77,7 +77,7 @@ namespace gammingStore.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Historys");
+                    b.ToTable("historys");
                 });
 
             modelBuilder.Entity("gammingStore.Models.User", b =>
@@ -97,6 +97,9 @@ namespace gammingStore.Migrations
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Password")
                         .IsRequired()

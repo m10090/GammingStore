@@ -18,7 +18,7 @@ public partial class EmployeesController {
   public IActionResult Index() { return View(); }
 
   public IActionResult Users() {
-    var users = db.users.Take(10).ToList();
+    var users = db.users.Where(x => !x.IsDeleted).Take(10).ToList();
     return View(users);
   }
 
@@ -28,8 +28,8 @@ public partial class EmployeesController {
     return View(product);
   }
 
-  [HttpGet("Employees/EditUsers/{id}")]
-  public IActionResult EditUsers(int id) {
+  [HttpGet("Employees/EditUser/{id}")]
+  public IActionResult EditUser(int id) {
     var user = db.users.FirstOrDefault(p => p.UserId == id);
     return View(user);
   }
@@ -40,7 +40,7 @@ public partial class EmployeesController {
   }
 
   public IActionResult Orders() {
-    var orders = db.Historys
+    var orders = db.historys
                      .Join(db.products, h => h.ProductId, p => p.ProductId,
                            (h, p) => new { h, p })
                      .Join(db.users, hp => hp.h.UserId, u => u.UserId,
@@ -76,20 +76,24 @@ public partial class EmployeesController {
   public IActionResult AddProduct() { return View(); }
 
   public IActionResult UnderDelivery() {
-    var undelivered =
-        db.Historys.Where((x) => !x.Delivered)
-            .Join(db.users, h => h.UserId, u => u.UserId, (h, u) => new { h, u })
-            .Join(db.products, hu => hu.h.ProductId, p => p.ProductId,
-                  (hu, p) => new { hu, p })
-            .Select(x => new Order { Id = x.hu.h.Id, UserName = x.hu.u.Username,
-                                     ProductName = x.p.Name, Price = x.p.Price })
-            .ToList();
+    var undelivered = db.historys.Where((x) => !x.Delivered)
+                          .Join(db.users, h => h.UserId, u => u.UserId,
+                                (h, u) => new { h, u })
+                          .Join(db.products, hu => hu.h.ProductId,
+                                p => p.ProductId, (hu, p) => new { hu, p })
+                          .Select(x => new Order { Id = x.hu.h.TranscationId,
+                                                   UserName = x.hu.u.Username,
+                                                   ProductName = x.p.Name,
+                                                   Price = x.p.Price })
+                          .ToList();
 
     return View(undelivered);
   }
-  [HttpGet("Employees/Delivered/{id}")]
-  public IActionResult Delivered(int id) {
-    var historyObj= db.Historys.FirstOrDefault(x => x.Id == id);
+
+  [HttpGet("Employees/Delivered/{TranscationId}")]
+  public IActionResult Delivered(int TranscationId) {
+    var historyObj =
+        db.historys.FirstOrDefault(x => x.TranscationId == TranscationId);
     if (historyObj == null) {
       return NotFound("Order not found");
     }
@@ -97,8 +101,20 @@ public partial class EmployeesController {
       return BadRequest("Order already delivered");
     }
     historyObj.Delivered = true;
-    db.Historys.Update(historyObj);
+    db.historys.Update(historyObj);
     db.SaveChanges();
     return RedirectToAction("UnderDelivery");
+  }
+
+  [HttpGet("Employees/DeleteUser/{id}")]
+  public IActionResult DeleteUser(int id) {
+    var user = db.users.FirstOrDefault(p => p.UserId == id);
+    if (user == null) {
+      return NotFound("User not found");
+    }
+    user.IsDeleted = true;
+    db.users.Update(user);
+    db.SaveChanges();
+    return RedirectToAction("Users", "Employees");
   }
 }

@@ -39,7 +39,8 @@ namespace gammingStore.Migrations
                     FullName = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
                     Role = table.Column<string>(type: "TEXT", nullable: false),
-                    Address = table.Column<string>(type: "TEXT", nullable: false)
+                    Address = table.Column<string>(type: "TEXT", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,7 +48,7 @@ namespace gammingStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Historys",
+                name: "historys",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -61,15 +62,15 @@ namespace gammingStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Historys", x => x.Id);
+                    table.PrimaryKey("PK_historys", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Historys_products_ProductId",
+                        name: "FK_historys_products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Historys_users_UserId",
+                        name: "FK_historys_users_UserId",
                         column: x => x.UserId,
                         principalTable: "users",
                         principalColumn: "UserId",
@@ -77,18 +78,18 @@ namespace gammingStore.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Historys_Delivered",
-                table: "Historys",
+                name: "IX_historys_Delivered",
+                table: "historys",
                 column: "Delivered");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Historys_ProductId",
-                table: "Historys",
+                name: "IX_historys_ProductId",
+                table: "historys",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Historys_UserId",
-                table: "Historys",
+                name: "IX_historys_UserId",
+                table: "historys",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -102,7 +103,7 @@ namespace gammingStore.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Historys");
+                name: "historys");
 
             migrationBuilder.DropTable(
                 name: "products");

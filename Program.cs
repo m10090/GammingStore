@@ -16,13 +16,13 @@ builder.Services.AddDbContext<DB>();
 var db = builder.Services?.BuildServiceProvider()?.GetService<DB>();
 
 // add admin to the database
-if (db != null && db.users.FirstOrDefault(u => u.Username == "admin") == null)
+if (db != null)
 {
     var admin = new User { };
     builder.Configuration.GetSection("Admin").Bind(admin);
     var passwordHasher = new PasswordHasher<User>();
     admin.Password = passwordHasher.HashPassword(admin, admin.Password);
-    if (db.users.FirstOrDefault(u => u.Username == "admin") == null)
+    if (!db.users.Any(u => u.Username == admin.Username))
     {
         db.users.Add(admin);
         db.SaveChanges();

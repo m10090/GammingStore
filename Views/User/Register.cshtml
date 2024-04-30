@@ -59,38 +59,40 @@
       alert('passwords do not match');
       return;
     }
-    if (!(password.length > 8 && password.match(/[0-9]/) 
+    if (!(password.length >= 8 && password.match(/[0-9]/) 
       && (/[A-Z]/).test(password) 
       && (/[a-z]/).test(password)
       && (/[!#$%^&*()_+@("@")]/).test(password))){
       alert('password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character');
       return;
     }
-    else {
-      fetch('/User/Register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          fullName: fullName,
-          email: email,
-          username: username,
-          password: password,
-          address: address
-        })
-      })
-      .then(data => {
-        if(data.status === 200){
-          alert('Registration successful');
-          window.location.href = "/User/Login";
-        }
-        else {
-          data.json().then(data => {
-            alert(data.Message);
-          })
-        }
-      })
+    if (!email.match(/^[a-zA-Z0-9._-]+@("@")[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)){
+      alert('invalid email');
+      return;
     }
+    fetch('/User/Register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        fullName: fullName,
+        email: email,
+        username: username,
+        password: password,
+        address: address
+      })
+    })
+    .then(data => {
+      if(data.status === 200 || data.status === 201){
+        alert('Registration successful');
+        window.location.href = "/User/Login";
+      }
+      else {
+        data.json().then(data => {
+          alert(data.Message);
+        })
+      }
+    })
   }
 </script>

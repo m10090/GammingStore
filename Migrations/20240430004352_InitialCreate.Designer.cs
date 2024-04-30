@@ -11,7 +11,7 @@ using gammingStore.Data;
 namespace gammingStore.Migrations
 {
     [DbContext(typeof(DB))]
-    [Migration("20240429202421_InitialCreate")]
+    [Migration("20240430004352_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -80,7 +80,7 @@ namespace gammingStore.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Historys");
+                    b.ToTable("historys");
                 });
 
             modelBuilder.Entity("gammingStore.Models.User", b =>
@@ -100,6 +100,9 @@ namespace gammingStore.Migrations
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Password")
                         .IsRequired()

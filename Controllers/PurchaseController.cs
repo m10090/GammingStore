@@ -58,7 +58,7 @@ public class PurchaseController : Controller
         do
         {
             transcationId = new Random().Next(100000, 999999);
-        } while (db.Historys.Any(h => h.TranscationId == transcationId));
+        } while (db.historys.Any(h => h.TranscationId == transcationId));
 
         foreach (var item in cart)
         {
@@ -76,6 +76,10 @@ public class PurchaseController : Controller
             {
                 product.IsDeleted = true;
             }
+            if (product.IsDeleted)
+            {
+                return BadRequest(new { message = $"{product.Name} is out of stock" });
+            }
             product.Stock -= item.quantity;
             totalCost += product.Price * item.quantity;
             db.products.Update(product);
@@ -87,7 +91,7 @@ public class PurchaseController : Controller
                 Date = DateTime.Now,
                 TranscationId = transcationId,
             };
-            db.Historys.Add(history);
+            db.historys.Add(history);
         }
         db.SaveChanges();
         return Ok(new { message = "Checkout successful", TotalCost = totalCost });

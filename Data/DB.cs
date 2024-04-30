@@ -13,22 +13,24 @@ public class DB : DbContext {
     modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
   }
 
-  public override int SaveChanges() { return base.SaveChanges(); }
+  public override int SaveChanges() {
+    ExecuteIsDeletedTrigger();
+    return base.SaveChanges();
+  }
 
   private void ExecuteIsDeletedTrigger() {
     this.Database.ExecuteSqlRaw(@"
       CREATE TRIGGER IF NOT EXISTS IsDeletedTrigger
-      AFTER UPDATE OF Stock ON products
+      AFTER INSERT ON products
       BEGIN
         UPDATE products
         SET IsDeleted = 1
         WHERE Stock <= 0;
       END
     ");
-    base.SaveChanges();
   }
 
   public DbSet<User> users { set; get; } = null!;
   public DbSet<Product> products { set; get; } = null!;
-  public DbSet<TranscationHistory> Historys { set; get; } = null!;
+  public DbSet<TranscationHistory> historys { set; get; } = null!;
 }

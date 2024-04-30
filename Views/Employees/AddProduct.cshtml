@@ -26,3 +26,19 @@
         <input type="submit" class="btn btn-primary" value="Add">
     </div>
 </form>
+
+
+
+<script>
+  function Add(event){
+    // get file name from input
+    const file = document.querySelector('#file').files[0];
+    if (file && file.type !== 'image/jpeg'){
+      alert('file must be jpeg');
+      event.preventDefault();
+      return ;
+    }
+
+  }
+  document.querySelector('form').addEventListener('submit', Add);
+</script>

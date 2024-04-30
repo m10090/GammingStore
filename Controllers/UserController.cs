@@ -27,7 +27,7 @@ public class UserController : Controller {
   public async Task<ActionResult<MessageResponse>>
   Login([FromBody] LoginDTO user) {
     var userObj = db.users.FirstOrDefault(u => u.Username.ToLower() ==
-                                               user.username.ToLower());
+                                               user.username.ToLower() && !u.IsDeleted);
     if (userObj == null) {
       return StatusCode(406,
                         new MessageResponse { Message = "User not found" });
@@ -64,7 +64,13 @@ public class UserController : Controller {
   [Authorize]
   public IActionResult Logout() {
     HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-    return RedirectToAction("Index", "Home");
+    string script = @"
+        <script type='text/javascript'>
+            localStorage.removeItem('cart');
+            window.location.href = '/Home';
+        </script>
+    ";
+    return Content(script, "text/html");
   }
 
   // userProfile
@@ -73,11 +79,11 @@ public class UserController : Controller {
     if (User.Identity?.Name == null) {
       return RedirectToAction("Login");
     }
-    var user = db.users.FirstOrDefault(u => u.Username == User.Identity.Name);
+    var user = db.users.FirstOrDefault(u => u.Username == User.Identity.Name && !u.IsDeleted);
     if (user == null) {
       return RedirectToAction("Login");
     }
-    var orders = db.Historys
+    var orders = db.historys
                      .Join(db.products, h => h.ProductId, p => p.ProductId,
                            (h, p) => new { h, p })
                      .Where(x => x.h.UserId == user.UserId)
@@ -100,14 +106,22 @@ public class UserController : Controller {
   [HttpPost]
   public ActionResult<MessageResponse> Register([FromBody] UserDTO user) {
     // validation
-    var regx = new Regex(@"[\[\]@-_!#$%^&*()<>?/\|}{~:]");
+    var regx = new Regex(@"[!#$%^&*()_+@]");
     if (user.Password.Length < 8 || !regx.IsMatch(user.Password) ||
         !user.Password.Any(char.IsDigit) || !user.Password.Any(char.IsUpper) ||
-        !user.Password.Any(char.IsLower) ||
-        user.Password.Any(char.IsWhiteSpace) ||
-        !user.Password.Any(char.IsLetter)) {
+        !user.Password.Any(char.IsLower) || !user.Password.Any(char.IsLetter)) {
       return StatusCode(
           406, new MessageResponse { Message = "Password is not valid" });
+    }
+    var emailRegx = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+    if (user.Email == null || !emailRegx.IsMatch(user.Email)) {
+      return StatusCode(406,
+                        new MessageResponse { Message = "Email is not valid" });
+    }
+
+    if (db.users.Any((x) => x.Username.ToLower() == user.Username.ToLower())) {
+      return StatusCode(
+          406, new MessageResponse { Message = "Username is allready taken" });
     }
 
     user.Password = passwordHasher.HashPassword(user, user.Password);
@@ -119,14 +133,11 @@ public class UserController : Controller {
       Role = "User",
       Address = user.Address,
     };
-    if (db.users.Any((x) => x.Username.ToLower() == user.Username.ToLower())) {
-      return StatusCode(
-          406, new MessageResponse { Message = "Username is allready taken" });
-    }
-
     db.users.Add(userObj);
     db.SaveChangesAsync();
-    return Ok(new MessageResponse { Message = "User created successfully" });
+
+    return StatusCode(
+        201, new MessageResponse { Message = "User created successfully" });
   }
 
   [Authorize]
@@ -135,7 +146,7 @@ public class UserController : Controller {
       return RedirectToAction("Login");
     }
     var user = db.users.FirstOrDefault(u => u.Username ==
-                                            User.Identity.Name.ToLower());
+                                            User.Identity.Name.ToLower() && !u.IsDeleted);
     return View(user);
   }
 
@@ -145,8 +156,8 @@ public class UserController : Controller {
     if (User.Identity?.Name == null) {
       return RedirectToAction("Login");
     }
-    var userObj = db.users.FirstOrDefault(u => u.Username ==
-                                               User.Identity.Name.ToLower());
+    var userObj = db.users.FirstOrDefault(
+        u => u.Username == User.Identity.Name.ToLower());
     if (userObj == null) {
       return RedirectToAction("Login");
     }

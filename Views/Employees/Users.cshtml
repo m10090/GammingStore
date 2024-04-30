@@ -2,13 +2,14 @@
     ViewBag.Title = "Users";
 }
 @model IEnumerable<gammingStore.Models.User>
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Username</th>
       <th>Full Name</th>
       <th>Email </th>
       <th>Role</th>
+      <th>Actions</th>
   </thead>
   @foreach (var item in Model){
     <tr>
@@ -16,6 +17,10 @@
       <td>@item.FullName</td>
       <td>@item.Email</td>
       <td>@item.Role</td>
+      <td>
+        <a asp-action="EditUser" asp-route-id="@item.UserId">Edit</a> 
+        <a asp-action="DeleteUser" asp-route-id="@item.UserId">Delete</a>
+      </td>
     </tr>
   }
 </table>
