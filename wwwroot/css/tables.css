@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 table {
   height: 100%;
@@ -16,6 +17,7 @@ table {
   border-collapse: collapse;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  text-align: left;
 }
 
 th,

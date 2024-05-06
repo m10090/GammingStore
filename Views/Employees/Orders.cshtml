@@ -13,6 +13,7 @@
     <th>Quantity</th>
     <th>Price</th>
     <th>Order Date</th>
+    <th>delivered</th>
 </thead>
 <tbody>
 @foreach(var item in Model){
@@ -23,6 +24,8 @@
   <td>@item.Quantity</td>
   <td>@item.Price</td>
   <td>@item.TranscationDate</td>
+  @* chose a green color for delivered orders and red for not delivered *@
+  <td style="background-color: @(item.Delivered ? "#228B22" : "#AA0000")">@((item.Delivered ? "Yes" : "No"))</td>
 </tr>
   
 

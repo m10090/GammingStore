@@ -25,6 +25,7 @@ form input {
 #register label,
 .form label,
 form label {
+  margin: 0 5%;
   font-size: 2rem;
   color: black;
   font-family: "Sans Serif";

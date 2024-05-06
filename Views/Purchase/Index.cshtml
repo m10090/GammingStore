@@ -46,6 +46,11 @@
     )
   }
   function load(){
+    if (localStorage.getItem('cart') === "[]"){
+      const tbody = document.getElementById('cartItems')
+      tbody.innerHTML = ''
+      return ;
+    }
     fetch('/Purchase', {
       method: 'POST',
       headers: {

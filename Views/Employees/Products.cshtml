@@ -4,6 +4,9 @@
   string filePath = "";
 }
 @model IEnumerable<gammingStore.Models.Product>
+<div class="container">
+<a href="/Employees/AddProduct" class="btn btn-primary">Add Product</a>
+<div class="cards-grid">
 @foreach(var item in Model){
     <div class="card" style="width: 18rem;">
         @{
@@ -15,7 +18,9 @@
             });
             filePath = filePath.Replace("wwwroot", "");
         }
-        <img src="@(filePath)" class="card-img-top" alt="...">
+        <div class="card-img">
+          <img src="@(filePath)" class="card-img-top" alt="...">
+        </div>
         <div class="card-body">
             <h3 class="card-title" style="color: black;">
               @item.Name
@@ -29,9 +34,12 @@
             <h6 class="card-title" style="color: black;">
               @item.Stock
             </h6>
-            <a href="/Employees/EditProduct/@item.ProductId" class="btn btn-primary">Edit</a>
-            <a href="/Employees/DeleteProduct/@item.ProductId" class="btn btn-danger">Delete</a>
+            <div class="card-options">
+            <a href="/Employees/EditProduct/@item.ProductId" class="btn employees-optbtn-1">Edit</a>
+            <a href="/Employees/DeleteProduct/@item.ProductId" class="btn employees-optbtn">Delete</a>
+            </div>
         </div>
     </div>
 }
-<a href="/Employees/AddProduct" class="btn btn-primary">Add Product</a>
+</div>
+</div>
