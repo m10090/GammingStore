@@ -2,7 +2,9 @@
     ViewBag.Title = "Users";
 }
 @model IEnumerable<gammingStore.Models.User>
-<table class="table">
+<div class="container">
+  <div class="table">
+<table>
   <thead>
     <tr>
       <th>Username</th>
@@ -24,6 +26,8 @@
     </tr>
   }
 </table>
+</div>
 <div>
   <a asp-action="AddUser">Add User</a>
+</div>
 </div>

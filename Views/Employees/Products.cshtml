@@ -1,10 +1,21 @@
 @{
   ViewBag.Title = "Products";
+  List<string> images=     Directory.GetFiles("wwwroot/images").ToList();
+  string filePath = "";
 }
 @model IEnumerable<gammingStore.Models.Product>
 @foreach(var item in Model){
     <div class="card" style="width: 18rem;">
-        <img src="~/images/@(item.ProductId).jpeg"  class="card-img-top" alt="...">
+        @{
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex($@"{item.ProductId.ToString()}\.");
+            images.ForEach(f => {
+                if (regex.IsMatch(f)){
+                    filePath =  f;
+                }               
+            });
+            filePath = filePath.Replace("wwwroot", "");
+        }
+        <img src="@(filePath)" class="card-img-top" alt="...">
         <div class="card-body">
             <h3 class="card-title" style="color: black;">
               @item.Name

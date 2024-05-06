@@ -3,23 +3,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gammingStore.Data;
 
-public class DB : DbContext {
-  protected override void
-  OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-    optionsBuilder.UseSqlite("Data Source=Data.db");
-  }
+public class DB : DbContext
+{
+    protected override void
+    OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("Data Source=Data.db");
+    }
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder) {
-    modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
-  }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+    }
 
-  public override int SaveChanges() {
-    ExecuteIsDeletedTrigger();
-    return base.SaveChanges();
-  }
+    public override int SaveChanges()
+    {
+        ExecuteIsDeletedTrigger();
+        return base.SaveChanges();
+    }
 
-  private void ExecuteIsDeletedTrigger() {
-    this.Database.ExecuteSqlRaw(@"
+    private void ExecuteIsDeletedTrigger()
+    {
+        this.Database.ExecuteSqlRaw(@"
       CREATE TRIGGER IF NOT EXISTS IsDeletedTrigger
       AFTER INSERT ON products
       BEGIN
@@ -28,9 +33,9 @@ public class DB : DbContext {
         WHERE Stock <= 0;
       END
     ");
-  }
+    }
 
-  public DbSet<User> users { set; get; } = null!;
-  public DbSet<Product> products { set; get; } = null!;
-  public DbSet<TranscationHistory> historys { set; get; } = null!;
+    public DbSet<User> users { set; get; } = null!;
+    public DbSet<Product> products { set; get; } = null!;
+    public DbSet<TranscationHistory> historys { set; get; } = null!;
 }

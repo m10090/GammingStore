@@ -6,14 +6,19 @@ else
   ViewBag.Title = User.Identity.Name;
 }
 @model IEnumerable<gammingStore.Models.Order>
+<div class="container">
+  <div>
 <h1>
   welcome @((User.Identity?.Name == null)? "UNKNOWN" : User.Identity?.Name)
 </h1>
 <a href="/user/logout" class="btn btn-secondary">
   Logout
 </a>
+  </div>
+<div>
 <h2>Orders</h2>
-<table class="table">
+<div class="table">
+<table >
   <thead>
     <tr>
       <th>Order Id</th>
@@ -35,6 +40,9 @@ else
     }
   </tbody>
 </table>
+</div>
+</div>
 <div>
   <a href="/User/EditProfile" class="btn btn-primary">Edit Profile</a>
+</div>
 </div>

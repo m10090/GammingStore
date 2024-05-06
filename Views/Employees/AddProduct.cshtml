@@ -2,29 +2,17 @@
     ViewBag.Title = "Add Product";
 }
 <form method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="Name">Name</label>
-        <input type="text" class="form-control" id="Name" name="Name" required>
-    </div>
-    <div class="form-group">
-        <label for="Description">Description</label>
-        <input type="text" class="form-control" id="Description" name="Description" required>
-    </div>
-    <div class="form-group">
-        <label for="Price">Price</label>
-        <input type="number" class="form-control" id="Price" name="Price" required>
-    </div>
-    <div class="form-group">
-        <label for="Stock">Stock</label>
-        <input type="number" class="form-control" id="Stock" name="Stock" required>
-    </div>
-    <div class="form-group">
-        <label for="file">Image (must be jpeg)</label>
-        <input type="file" name="ImageFile" id="file" required>
-    </div>
-    <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Add">
-    </div>
+  <label for="Name">Name</label>
+  <input type="text" class="form-control" id="Name" name="Name" required>
+  <label for="Description">Description</label>
+  <input type="text" class="form-control" id="Description" name="Description" required>
+  <label for="Price">Price</label>
+  <input type="number" class="form-control" id="Price" name="Price" required>
+  <label for="Stock">Stock</label>
+  <input type="number" class="form-control" id="Stock" name="Stock" required>
+  <label for="file">Image (must be jpeg)</label>
+  <input type="file" name="ImageFile" id="file" required>
+  <input type="submit" class="btn btn-primary" value="Add">
 </form>
 
 
@@ -33,8 +21,8 @@
   function Add(event){
     // get file name from input
     const file = document.querySelector('#file').files[0];
-    if (file && file.type !== 'image/jpeg'){
-      alert('file must be jpeg');
+    if (file && file.type.split('/')[0] !== 'image' ){
+      alert('File must be an image');
       event.preventDefault();
       return ;
     }

@@ -63,7 +63,7 @@ public class PurchaseController : Controller
         foreach (var item in cart)
         {
             var product = db.products.FirstOrDefault(p => p.ProductId == item.id);
-            if (product == null)
+            if (product == null || product.IsDeleted)
             {
                 return NotFound(new { message = "Product not found" });
             }
@@ -75,10 +75,6 @@ public class PurchaseController : Controller
             if (product.Stock == item.quantity)
             {
                 product.IsDeleted = true;
-            }
-            if (product.IsDeleted)
-            {
-                return BadRequest(new { message = $"{product.Name} is out of stock" });
             }
             product.Stock -= item.quantity;
             totalCost += product.Price * item.quantity;

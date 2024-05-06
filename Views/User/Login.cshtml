@@ -3,18 +3,21 @@
 
 }
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
-<div id="lgIn" class="form-group">
-  <label for="username">Username</label>
-  <input name="username" type="text" required/>
-  <br>
-  <label for="password">password</label> 
-  <input type="password"  name="password" required/>
-  <br>
-  <button onclick="Login()" class="btn btn-primary" required>Login</button>
-</div>
-<h3>Don't have an account?</h3>
-<a href="/User/Register" class="btn btn-secondary">sign up</a>
-<script>
+<div class="container">
+  <div id="lgIn" class="form">
+    <label for="username">Username</label>
+    <input name="username" type="text" required/>
+    <br>
+    <label for="password">password</label> 
+    <input type="password"  name="password" required/>
+    <br>
+    <button onclick="Login()" class="submit-btn" required>Login</button>
+  </div>
+  <div>
+  <h3>Don't have an account?</h3>
+  <a href="/User/Register" class="btn btn-secondary">sign up</a>
+  </div>
+  <script>
   function Login(){
     const username = document.querySelector('#lgIn input[name="username"]').value;
     const password = document.querySelector('#lgIn input[name="password"]').value;
@@ -36,7 +39,7 @@
       })
     })
     .then(data => {
-      if(data.status === 200){
+      if(data.status === 200 || data.status === 201){
         alert('Login successful');
         window.location.href = '/User';
       }
@@ -46,3 +49,4 @@
     })
   }
 </script>
+</div>

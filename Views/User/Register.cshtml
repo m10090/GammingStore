@@ -3,36 +3,19 @@
   
 }
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
-<div id="regForm">
-  <div clase="form-group">
+<div id="register" class="form">
     <label for="fullName">Full Name</label>
-    <br>
     <input name="FullName" type="text" required/>
-  </div>
-  <div clase="form-group">
     <label for="Email">Email</label>
-    <br>
     <input name="Email" type="email" required/>
-  </div>
-  <div clase="form-group">
     <label for="Username">Username</label>
-    <br>
     <input name="Username" type="text" required/>
-  </div>
-  <div clase="form-group">
     <label for="Password">password</label> 
-    <br>
     <input name="Password" type="password"  required/>
-  </div>
-  <div clase="form-group">
     <label for="ConfirmPassword">Confirm Password</label>
-    <br>
     <input name="ConfirmPassword" type="password" required/>
-  </div>
-  <div clase="form-group">
     <label for="Address">Address</label> <br>
     <input name="Address" type="text" required/>
-  </div>
     <button onclick="Register()">Register</button>
 </div>
 
@@ -40,20 +23,32 @@
 <script>
   'use strict'
   function Register(){
-    const fullName = document.querySelector('#regForm input[name="FullName"]').value;
-    const email = document.querySelector('#regForm input[name="Email"]').value;
-    const username = document.querySelector('#regForm input[name="Username"]').value;
-    const password = document.querySelector('#regForm input[name="Password"]').value;
-    const confirmPassword = document.querySelector('#regForm input[name="ConfirmPassword"]').value;
-    const address = document.querySelector('#regForm input[name="Address"]').value;
+    const fullName = document.querySelector('#register input[name="FullName"]').value;
+    const email = document.querySelector('#register input[name="Email"]').value;
+    const username = document.querySelector('#register input[name="Username"]').value;
+    const password = document.querySelector('#register input[name="Password"]').value;
+    const confirmPassword = document.querySelector('#register input[name="ConfirmPassword"]').value;
+    const address = document.querySelector('#register input[name="Address"]').value;
     @if(Environment.IsDevelopment())
     {
       <text>
-      console.log(fullName);
-      console.log(email);
-      console.log(username);
-      console.log(password);
+        console.log(fullName);
+        console.log(email);
+        console.log(username);
+        console.log(password);
       </text>
+    }
+    if ((/^\s*$/).test(address)){
+      alert("address can't be empty")
+      return 
+    }
+    if ((/^\s*$/).test(fullName)){
+      alert("fullname can't be empty")
+      return ;
+    }
+    if ((/\s/).test(username)){
+      alert("username can't contain spaces");
+      return;
     }
     if(password !== confirmPassword){
       alert('passwords do not match');

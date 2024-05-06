@@ -8,70 +8,78 @@
    || User.IsInRole("Accountant")
    || User.IsInRole("Sales"));
 }
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - gammingStore</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - Gamming Store</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/gammingStore.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/button-animation.css" />
+    <link rel="stylesheet" href="~/css/userView.css" />
+    <link rel="stylesheet" href="~/css/tables.css" />
+    <script src="~/lib/toggle-button/animations.js" asp-append-version="true"> 
+    </script>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">gammingStore</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+        <nav class="navbar">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Gamming Store</a>
+                <button class="navbar-toggler button-one" id="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation" >
+                <svg fill="var(--button-color)" class="hamburger" viewBox="0 0 100 100" width="250">
+                  <rect class="line top" width="80" height="10" x="10" y="25" rx="5">
+                  </rect>
+                  <rect class="line middle" width="80" height="10" x="10" y="45" rx="5">
+                  </rect>
+                  <rect class="line bottom" width="80" height="10" x="10" y="65" rx="5">
+                  </rect>
+                  </svg>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse hide-navbar" id="navbar-collapse">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
                           @if(isAuthenticated){
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">@User.Identity.Name</a>
+                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">@User.Identity.Name</a>
                           }
                           else{
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                           }
                         </li>
                           @if(isAuthenticated){
                           <li class="nav-item" >
-                            <a class="nav-link text-dark"
+                            <a class="nav-link"
                               asp-area="" asp-controller="Purchase" asp-action="Index">Cart</a>
                           </li>
                           }
                         <li class="nav-item">
                           @if(isEmployee){
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Employee</a>
+                            <a class="nav-link" asp-area="" asp-controller="Employees" asp-action="Index">Employee</a>
                           }
                     </ul>
-                </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div>
             &copy; 2024 - gammingStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

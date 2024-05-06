@@ -2,16 +2,17 @@
   
 }
 @model List<gammingStore.Models.Order>
-
+<div class="container">
 <h1>Under Delivery</h1>
-<table class="table">
+<div class= "table">
+<table>
   <thead>
   <tr>
     <th>Id</th>
     <th>Price</th>
     <th>ProductName</th>
     <th>Quantity</th>
-    <th> </th>
+    <th>Delivered</th>
   </tr>
   </thead>
   <tbody>
@@ -19,8 +20,8 @@
   <tr>
     <td>@item.Id</td>
     <td>@item.Price</td>
-    <td>@item.Quantity</td>
     <td>@item.ProductName</td> 
+    <td>@item.Quantity</td>
     <td>
       <a href="/Employees/Delivered/@item.Id"> Delivered? </a>
     </td>
@@ -28,3 +29,5 @@
 }
 </tbody>
 </table>
+</div>
+</div>

@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using gammingStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,8 @@ public partial class EmployeesController : Controller {
     db.SaveChanges();
     var filePath =
         Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images",
-                     productObj.ProductId.ToString() + ".jpeg");
+                     productObj.ProductId.ToString() + '.' +
+                         productRequest.ImageFile.FileName.Split('.').Last());
     using (var stream = new FileStream(filePath, FileMode.Create)) {
       productRequest.ImageFile.CopyTo(stream);
     }
@@ -40,15 +42,20 @@ public partial class EmployeesController : Controller {
     var productObj = db.products.Add(productRequest).Entity;
     // rename image in wwwroot/images/{id}
     db.SaveChanges();
-    System.IO.File.Move($"wwwroot/images/{id}.jpeg",
-                        $"wwwroot/images/{productObj.ProductId}.jpeg");
-
+    Regex regex = new Regex($@"{id.ToString()}\.");
+    Directory.GetFiles("wwwroot/images").ToList().ForEach(f => {
+      if (regex.IsMatch(f)) {
+        System.IO.File.Move(
+            f, f.Replace(id.ToString(), productObj.ProductId.ToString()));
+      }
+    });
     return RedirectToAction("Products", "Employees");
   }
 
   [HttpPost]
   [Authorize(Roles = "Admin")]
   public IActionResult AddUser([FromForm] UserDTO user) {
+    user.Username = user.Username.ToLower();
     db.users.Add(user);
     user.Password = passwordHasher.HashPassword(user, user.Password);
     db.SaveChanges();
