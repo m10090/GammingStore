@@ -49,6 +49,10 @@ public class PurchaseController : Controller
     [HttpPost]
     public IActionResult Checkout([FromBody] List<CartDTO> cart)
     {
+        if (cart == null || cart.Count == 0 )
+        {
+            return BadRequest(new { message = "Cart is empty" });
+        }
         double totalCost = 0;
         var userId = Convert.ToInt32(
             User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
