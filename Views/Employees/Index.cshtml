@@ -2,7 +2,7 @@
   ViewBag.Title = "Admin";
   bool isAdmin = User != null && (User.IsInRole("Admin") || User.IsInRole("Owner"));
 }
-<div class="container">
+<div>
   <h1>Admin</h1>
   <p>Welcome to the Admin page</p>
   <div>

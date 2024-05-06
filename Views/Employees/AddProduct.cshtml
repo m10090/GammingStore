@@ -10,7 +10,7 @@
   <input type="number" class="form-control" id="Price" name="Price" required>
   <label for="Stock">Stock</label>
   <input type="number" class="form-control" id="Stock" name="Stock" required>
-  <label for="file">Image (must be jpeg)</label>
+  <label for="file">Image </label>
   <input type="file" name="ImageFile" id="file" required>
   <input type="submit" class="btn btn-primary" value="Add">
 </form>
@@ -24,7 +24,7 @@
     if (file && file.type.split('/')[0] !== 'image' ){
       alert('File must be an image');
       event.preventDefault();
-      return ;
+      return;
     }
 
   }

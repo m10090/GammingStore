@@ -2,7 +2,7 @@ html {
   font-size: 14px;
 }
 * {
-  color: black;
+  color: white;
 }
 body {
   display: flex;
@@ -16,7 +16,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background-color: #ffffff;
-  background-image: linear-gradient(278deg, #d0d0d0 0%, #274070 74%);
+  background-image: linear-gradient(278deg, #b0b0b0 0%, #274070 74%);
 }
 body::-webkit-scrollbar {
   display: none;
@@ -61,7 +61,7 @@ html {
   padding: 0 1rem;
 }
 .nav-item {
-  color: white;
+  color: black;
   max-width: 100%;
   min-width: 90%;
 }
@@ -72,8 +72,8 @@ html {
 }
 @keyframes changecolor {
   to {
-    background-color: #f8f9fa;
-    color: black;
+    background-color: #258cfb;
+    color: white;
   }
 }
 @keyframes changeborder {
@@ -105,8 +105,7 @@ html {
     rgba(0, 0, 0, 0.17) 0px 12px 13px,
     rgba(0, 0, 0, 0.09) 0px -3px 5px;
   border-top-right-radius: 10px;
-  background-color: #5b5b5b;
-  
+  background-color: #bcbcbc;
   width: auto;
   height: 100%;
 }
@@ -118,7 +117,7 @@ html {
   justify-content: center;
   width: calc(2 * 1.5rem + 16px * 2);
 }
-.navbar-toggler{
+.navbar-toggler {
   box-shadow: 0px 0px 0px 0px;
   border: 1px solid transparent;
 }
@@ -160,7 +159,6 @@ html {
 /* } */
 main {
   height: 100%;
-  overflow-y: hidden;
   padding-left: 10px;
   flex-grow: 1;
   display: flex;
@@ -172,10 +170,41 @@ main {
   grid-template-rows: repeat(auto-fit, minmax(1fr, 200px));
   grid-column-gap: 1%;
   padding-top: 10vh;
-  min-height: 90vh;
-  width: 100%; 
+  height: 90vh;
+  width: 100%;
   justify-items: center; /* Center horizontally */
   /* align-items: center; */
-  overflow-y: auto;
+  overflow: auto;
+}
+div {
+  text-align: center;
+}
+.width100 {
+  width: 100%;
 }
 
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  color: #bcbcbc;
+  font-size: 1.2rem;
+  background-color: #142d4c;
+  text-align: center;
+  border-radius: 0.25rem;
+  border: 1px solid transparent;
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  text-decoration: none;
+  &:focus{
+    outline: none;
+  }
+}
+.inline-block *{
+  display: inline-block;
+}
+input{
+  color: black;
+}

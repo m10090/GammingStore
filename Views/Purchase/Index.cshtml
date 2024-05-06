@@ -1,6 +1,7 @@
 <div class="container">
     <h1>Cart</h1>
-    <table class="table">
+    <div class="table">
+    <table >
         <thead>
             <tr>
                 <th>Product</th>
@@ -13,10 +14,11 @@
         <tbody id="cartItems">
         </tbody>
     </table>
-    <h3>
-      Total Cost: <span id="totalCost"></span></h3>
+  </div>
+  <div class="inline-block">
     <button class="btn btn-primary" onclick="checkout()">Checkout</button>
-    
+    <h3> Total Cost: <span id="totalCost">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></h3>
+  </div>
 </div>
 <script>
   load()
