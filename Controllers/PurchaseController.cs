@@ -18,7 +18,7 @@ public class PurchaseController : Controller
     [HttpPost]
     public ActionResult Index([FromBody] List<CartDTO> cart)
     {
-        if (cart == null)
+        if (cart == null || cart.Count == 0 )
         {
             return BadRequest(new { message = "Cart is empty" });
         }
