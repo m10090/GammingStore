@@ -55,6 +55,9 @@ public partial class EmployeesController : Controller {
   [HttpPost]
   [Authorize(Roles = "Admin")]
   public IActionResult AddUser([FromForm] UserDTO user) {
+    if (db.users.Any(u => u.Username == user.Username)) {
+      return BadRequest("Username already exists");
+    }
     user.Username = user.Username.ToLower();
     db.users.Add(user);
     user.Password = passwordHasher.HashPassword(user, user.Password);
@@ -71,7 +74,9 @@ public partial class EmployeesController : Controller {
     userObj.FullName = user.FullName;
     userObj.Email = user.Email;
     userObj.Address = user.Address;
-    userObj.Password = passwordHasher.HashPassword(userObj, userObj.Password);
+    userObj.IsDeleted = user.IsDeleted;
+    userObj.Role = user.Role;
+    userObj.Password = passwordHasher.HashPassword(userObj, user.Password);
     db.users.Update(userObj);
     db.SaveChanges();
     return RedirectToAction("Users", "Employees");

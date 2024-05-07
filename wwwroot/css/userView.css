@@ -53,4 +53,14 @@ submit-btn:focus{
   color: black;
   box-shadow: 0 0 0 0;
 }
+.form select,
+form select {
+  width: 90%;
+  height: 40px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  margin: 0 5%;
+  border: 1px solid #ccc;
+  color: black;
+}
 
