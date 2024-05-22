@@ -34,6 +34,9 @@ namespace gammingStore.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("OldPrice")
+                        .HasColumnType("decimal(9, 2)");
+
                     b.Property<double>("Price")
                         .HasColumnType("decimal(9, 2)");
 

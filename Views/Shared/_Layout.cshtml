@@ -62,6 +62,9 @@
                           @if(isEmployee){
                             <a class="nav-link" asp-area="" asp-controller="Employees" asp-action="Index">Employee</a>
                           }
+                        </li>
+                        <li class="nav-item" id = "clock">
+                        </li>
                     </ul>
             </div>
         </nav>
@@ -78,6 +81,27 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     
+    <script>
+      'use strict'
+      setInterval(clock, 1000)
+      function clock(){
+        const date = new Date()
+        let time = date.toLocaleTimeString()
+        const am = time.includes('AM') 
+        time = time.replace('AM', '').replace('PM', '') //
+        document.getElementById('clock').textContent = time
+        const img = document.createElement('img')
+        img.src = (am)? "https://img.icons8.com/?size=100&id=648&format=png&color=000000":"https://img.icons8.com/?size=100&id=25031&format=png&color=000000"
+        img.style.width = '2rem'
+        img.style.height = '2rem'
+        document.getElementById('clock').appendChild(img)
+      }
+      // get params from the url and if the param "success" is true clear the local storage
+      const urlParams = new URLSearchParams(window.location.search)
+      urlParams.get('success') && localStorage.removeItem('cart')
+
+
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

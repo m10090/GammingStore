@@ -4,8 +4,10 @@
   string filePath = "";
 }
 @model IEnumerable<gammingStore.Models.Product>
-<div class="container">
+<div class="container" style="grid-template-rows: 0.25fr 1fr ;">
+  <div>
 <a href="/Employees/AddProduct" class="btn btn-primary">Add Product</a>
+  </div>
 <div class="cards-grid">
 @foreach(var item in Model){
     <div class="card" style="width: 18rem;">
@@ -29,7 +31,7 @@
               @item.Description
             </p>
             <h5 class="card-title" style="color: black;">
-              @item.Price
+              Price: <span style="text-decoration: line-through;">@((item.OldPrice>0)? item.OldPrice : "")</span> @item.Price
             </h5>
             <h6 class="card-title" style="color: black;">
               @item.Stock

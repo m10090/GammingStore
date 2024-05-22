@@ -4,13 +4,90 @@
 @model gammingStore.Models.Product
 <form  method="post">
   <label for="Name">Name</label>
-  <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name">
+  <input type="text"  id="Name" name="Name" value="@Model.Name">
   <label for="Description">Description</label>
-  <input type="text" class="form-control" id="Description" name="Description" value="@Model.Description">
+  <input type="text" id="Description" name="Description" value="@Model.Description">
   <label for="Price">Price</label>
-  <input type="number" class="form-control" id="Price" name="Price" value="@Model.Price">
+  <input type="number" id="Price" name="Price" value="@Model.Price" onclick="PriceGreaterThanZero(event)">
   <label for="Stock">Stock</label>
-  <input type="number" class="form-control" id="Stock" name="Stock" value="@Model.Stock">
+  <input type="text" id="Stock" name="Stock" value="@Model.Stock"
+  onkeydown="isNumber(event)">
+  <label for="oldPrice">Old Price</label>
+  <input type="text" id="oldPrice" name="oldPrice" value="@Model.OldPrice" 
+  onblur="greaterThanZero(event)" 
+  onkeypress="isNumber(event)" 
+  onfocus="cls(event)">
 <input type="submit" class="btn btn-primary" value=Update>
 </form>
+
+<script>
+  'use strict' // strict mode
+  function cls(event){
+    event.target.value = ''
+  }
+  function PriceGreaterThanZero(event){
+    if(Number(event.target.value) < 0){
+      event.preventDefault()
+    }
+  }
+  function greaterThanZero(event){
+    if((Number(event.target.value) < 0 
+      && Number(event.target.value) !== -1) ||
+      (isNaN(event.target.value) && event.target.value)){
+      
+      event.target.focus()
+      event.preventDefault()
+    }
+  }
+  function isNumber(event){
+    event.target.value = event.target.value.trim(); // string function
+    if(!eval("!isNaN(event.key) || event.key === 'Backspace' ||  !isNaN(event.target.value + event.key)")){
+        event.preventDefault()
+    }
+  }
+  const form = document.querySelector('form');
+  document.querySelectorAll('form *').forEach((x) => x.addEventListener('keydown',
+  (event) => {
+    if(event.key === 'Enter'){
+      event.preventDefault();  
+      form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      return 
+    }
+  }));
+
+  document
+    // querySelector
+    .querySelector("form")
+    // add event addEventListener
+    // event
+    .addEventListener('submit', Add)
+  // hosting 
+  function Add(event){
+    // get file name from input
+   const name  = document.querySelector('#Name').value;
+    const description = document.querySelector('#Description').value;
+    if ((/^\s*$/).test(name) || (/^\s*$/).test(description)){
+      alert('Name and Description must not be empty');
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    const price = document.querySelector('#Price').value;
+    if(Number(price) <= 0){
+      alert('Price must be greater than 0');
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    const oldPrice = document.querySelector('#oldPrice').value;
+    debugger
+    if ((oldPrice.charAt(0) === '-' && oldPrice[1] !== "1")
+      || isNaN(oldPrice) || oldPrice === ""){
+      alert('Old price must be greater than or equal to 0');
+      event.preventDefault(); // preventDefault
+      event.stopPropagation();
+      return;
+    }
+  }
+</script>
 

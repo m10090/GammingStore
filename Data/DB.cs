@@ -34,6 +34,11 @@ public class DB : DbContext
       END
     ");
     }
+    public void ResetContext()
+    {
+        this.Dispose();
+        var newContext = new DB();
+    }
 
     public DbSet<User> users { set; get; } = null!;
     public DbSet<Product> products { set; get; } = null!;

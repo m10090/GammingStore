@@ -16,24 +16,47 @@
     </table>
   </div>
   <div class="inline-block">
-    <button class="btn btn-primary" onclick="checkout()">Checkout</button>
-    <h3> Total Cost: <span id="totalCost">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></h3>
+    <button class="btn btn-primary" onclick="cashCheckout()">Chash Checkout</button>
+    <button class="btn btn-primary" onclick="cardCheckout()">Credit Card Checkout</button>
+    <h3> Total Cost: <span id="totalCost"></span></h3>
   </div>
 </div>
 <script>
-  load()
-  function checkout(){
-    fetch('/Purchase/Checkout', {
+  setTimeout(load,1000)
+  function cardCheckout(){
+    fetch('/Purchase/cardCheckout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body:localStorage.getItem('cart')
+      body:localStorage.getItem('cart'),
     }).then(
       (response) =>
       {
       if(response.status !== 200){
-        response.json().then((x) => alert(x.message))
+        console.warn(response)
+      }
+        else{
+          localStorage.removeItem('cart')
+          response.json().then(
+            (x)=> window.location.href = x.link
+            )
+        }
+      }
+    )
+  }
+  function cashCheckout(){
+    fetch('/Purchase/cashCheckout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body:localStorage.getItem('cart'),
+    }).then(
+      (response) =>
+      {
+      if(response.status !== 200){
+        response.json().then((x) => alert(x.message)).catch((x) => console.log(x))
       }
       else{
         console.log(response)

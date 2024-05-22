@@ -18,15 +18,44 @@
 
 
 <script>
+  'use strict'
   function Add(event){
     // get file name from input
     const file = document.querySelector('#file').files[0];
     if (file && file.type.split('/')[0] !== 'image' ){
       alert('File must be an image');
       event.preventDefault();
+      event.stopPropagation();
       return;
     }
-
+    const name  = document.querySelector('#Name').value;
+    const description = document.querySelector('#Description').value;
+    if ((/^\s*$/).test(name) || (/^\s*$/).test(description)){
+      alert('Name and Description must not be empty');
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    const price = document.querySelector('#Price').value;
+    if(Number(price) <= 0){
+      alert('Price must be greater than 0');
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
   }
-  document.querySelector('form').addEventListener('submit', Add);
+  const form = document.querySelector('form');
+  form.addEventListener('submit', Add);
+
+  const formChildrens = document.querySelectorAll('form *')
+  for (let x of formChildrens){
+    x.addEventListener('keydown',
+    (event) => {
+    if(event.key === 'Enter'){
+      event.preventDefault();  
+      form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      }
+      return 
+    })
+  };
 </script>

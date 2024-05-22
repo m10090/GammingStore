@@ -16,6 +16,7 @@ public record TranscationHistory
     public int Quantity { get; set; }
     public DateTime Date { get; set; } = DateTime.Now;
     public bool Delivered { get; set; } = false;
+
     virtual public User User { get; set; } = null!;
     virtual public Product Product { get; set; } = null!;
 }

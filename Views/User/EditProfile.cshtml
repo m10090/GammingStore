@@ -23,3 +23,17 @@
   <a href="/User/ChangePassword">Change Password</a>
 </div>
 </div>
+<script>
+  const form = document.querySelector('form');
+  form.addEventListener('submit', Add)
+  function Add(event){
+    const fullName = document.querySelector('#FullName').value;
+    const email = document.querySelector('#Email').value;
+    const address = document.querySelector('#Address').value;
+    if ((/^\s*$/).test(fullName) || (/^\s*$/).test(email) || (/^\s*$/).test(address)){
+      alert('Full Name, Email and Address must not be empty');
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+</script>

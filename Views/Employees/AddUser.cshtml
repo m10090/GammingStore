@@ -23,3 +23,27 @@
   </select>
   <input type="submit" class="btn btn-primary" value=Update>
 </form>
+<script>
+
+
+  const form = document.querySelector('form');
+  form.addEventListener('submit', Add)
+  function Add(event){
+    const username = document.querySelector('#Username').value;
+    const fullName = document.querySelector('#FullName').value;
+    const email = document.querySelector('#Email').value;
+    const address = document.querySelector('#Address').value;
+    const password = document.querySelector('#Password').value;
+    const role = document.querySelector('#Role').value;
+    if ((/^\s*$/).test(username) || (/^\s*$/).test(fullName) || (/^\s*$/).test(email) || (/^\s*$/).test(address) || (/^\s*$/).test(password) || (/^\s*$/).test(role)){
+      alert('All fields must not be empty');
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    if (password.length < 8){
+      alert('Password must be at least 8 characters long');
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+</script>

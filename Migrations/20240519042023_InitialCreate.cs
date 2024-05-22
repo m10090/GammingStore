@@ -21,7 +21,8 @@ namespace gammingStore.Migrations
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<double>(type: "decimal(9, 2)", nullable: false),
                     Stock = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    OldPrice = table.Column<double>(type: "decimal(9, 2)", nullable: false)
                 },
                 constraints: table =>
                 {

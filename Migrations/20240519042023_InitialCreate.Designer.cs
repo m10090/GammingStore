@@ -11,7 +11,7 @@ using gammingStore.Data;
 namespace gammingStore.Migrations
 {
     [DbContext(typeof(DB))]
-    [Migration("20240430004352_InitialCreate")]
+    [Migration("20240519042023_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -36,6 +36,9 @@ namespace gammingStore.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<double>("OldPrice")
+                        .HasColumnType("decimal(9, 2)");
 
                     b.Property<double>("Price")
                         .HasColumnType("decimal(9, 2)");

@@ -8,7 +8,7 @@
 @model IEnumerable<gammingStore.Models.Product>
 
 
-<div class="card-grid">
+<div class="cards-grid">
 @foreach(var item in Model){
     <div class="card">
         @{
@@ -31,10 +31,10 @@
               @item.Description
             </p>
             <h5 style="color: black;">
-              @item.Price
+              Price: <span style="text-decoration: line-through;">@((item.OldPrice>0)? item.OldPrice : "")</span> @item.Price
             </h5>
             <h6 style="color: black;">
-              @item.Stock
+              Stock:@item.Stock
             </h6>
           <button onclick="addToCart(@item.ProductId)">Buy</button>
     </div>
