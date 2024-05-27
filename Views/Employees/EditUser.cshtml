@@ -5,13 +5,20 @@
 
 <form method="post">
     <label asp-for="Username"></label>
-    <input asp-for="Username" class="form-control" readonly/>
+    <input asp-for="Username"  
+    pattern="^[a-zA-Z][a-zA-Z0-9-_]{4,24}$" required >
     <label asp-for="FullName"></label>
-    <input asp-for="FullName" class="form-control" />
-    <label asp-for="Email"></label>
-    <input asp-for="Email" class="form-control" />
+    <input asp-for="FullName" pattern ="(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})" required />
+    <label asp-for="Email" type="email"></label>
+    <input asp-for="Email"  required/>
     <label asp-for="Role"></label>
-    <input asp-for="Role" class="form-control" style="color:black"/>
-    <input type="password" asp-for="Password" class="form-control" />
+    <input asp-for="Role" style="color:black" pattern ="^[A-Za-z]+$" required/>
+    <label asp-for="Password">new password</label>
+    <input type="password" asp-for="Password"  required/>
     <input type="submit" value="Save">
 </form>
+<script>
+  'use strict'
+
+
+</script>

@@ -18,7 +18,7 @@ public partial class EmployeesController {
   public IActionResult Index() { return View(); }
 
   public IActionResult Users() {
-    var users = db.users.Where(x => !x.IsDeleted).Take(10).ToList();
+    var users = db.users.Where(x => !x.IsDeleted).ToList();
     return View(users);
   }
 

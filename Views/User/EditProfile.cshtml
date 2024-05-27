@@ -10,13 +10,15 @@
 </div>
 <form method="post" >
     <label for="FullName">Full Name</label>
-    <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName" required>
+    <input type="text" id="FullName" name="FullName" value="@Model.FullName" required>
     <label for="Email">Email</label>
-    <input type="Email" class="form-control" id="Email" name="Email" value="@Model.Email" required>
+    <input type="Email" id="Email" name="Email" value="@Model.Email" required>
     <label for="Address">Address</label>
-    <input type="text" class="form-control" id="Address" name="Address" value="@Model.Address" required>
-    changing address will change the delivery address for all the orders
-    <input type="submit" class="btn btn-primary" value=Update>
+    <input type="text" id="Address" name="Address" value="@Model.Address" required>
+    <p>changing address will change the delivery address for all the orders </p>
+    <label for="Password">Password</label>
+    <input type="password" name="Password" id="Password">
+    <input type="submit" class="btn btn-primary" value=Update required>
 </form>
 <div> 
   <h4>want to change password?</h4>
@@ -30,6 +32,7 @@
     const fullName = document.querySelector('#FullName').value;
     const email = document.querySelector('#Email').value;
     const address = document.querySelector('#Address').value;
+    const password = document.querySelector('#Password').value;
     if ((/^\s*$/).test(fullName) || (/^\s*$/).test(email) || (/^\s*$/).test(address)){
       alert('Full Name, Email and Address must not be empty');
       event.preventDefault();

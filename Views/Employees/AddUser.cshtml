@@ -4,27 +4,25 @@
 
 <form method="post" >
   <label for="Username">Username</label>
-  <input type="text" class="form-control" id="Username" name="Username" required>
+  <input type="text"  id="Username" name="Username" 
+  pattern="^[A-Za-z][A-Za-z0-9_]{3,23}$"
+  required >
   <label for="FullName">Full Name</label>
-  <input type="text" class="form-control" id="FullName" name="FullName" required>
+  <input type="text"  id="FullName" name="FullName"  
+  pattern="^[A-Za-z]{3,16}( [A-Za-z]{3,16}){0,3}$"
+  required>
   <label for="Email">Email</label>
-  <input type="Email" class="form-control" id="Email" name="Email" required>
+  <input type="Email" id="Email" name="Email" required>
   <label for="Address">Address</label>
-  <input type="text" class="form-control" id="Address" name="Address" required>
+  <input type="text"  id="Address" name="Address" required>
   <label for="Password">Password</label>
-  <input type="password" class="form-control" id="Password" name="Password" required>
+  <input type="password" id="Password" name="Password" required>
   <label for="Role">Role</label>
-  <select class="form-control" id="Role" name="Role" required>
-    <option value="Admin">Admin</option>
-    <option value="User">User</option>
-    <option value="Employee">Employee</option>
-    <option value="Manager">Manager</option>
-    <option value="Owner">Owner</option>
-  </select>
+  <input type="text" id="Role" name="Role" pattern="^[A-Za-z]+$" required>
   <input type="submit" class="btn btn-primary" value=Update>
 </form>
-<script>
 
+<script>
 
   const form = document.querySelector('form');
   form.addEventListener('submit', Add)
@@ -35,8 +33,14 @@
     const address = document.querySelector('#Address').value;
     const password = document.querySelector('#Password').value;
     const role = document.querySelector('#Role').value;
-    if ((/^\s*$/).test(username) || (/^\s*$/).test(fullName) || (/^\s*$/).test(email) || (/^\s*$/).test(address) || (/^\s*$/).test(password) || (/^\s*$/).test(role)){
-      alert('All fields must not be empty');
+    if ((/^\s*$/).test(username) || 
+      (/^\s*$/).test(email) ||
+      (/^\s*$/).test(address) ||
+      (/^\s*$/).test(password) ||
+      (/^\s*$/).test(role) 
+      ){
+
+      alert('check all fields');
       event.preventDefault();
       event.stopPropagation();
     }

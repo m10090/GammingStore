@@ -12,8 +12,8 @@ body {
   margin: 0;
   margin-bottom: 60px;
   width: 100vw;
-  height: 100vh;
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
   overflow-x: hidden;
   background-color: #ffffff;
   background-image: linear-gradient(278deg, #b0b0b0 0%, #274070 74%);
@@ -43,7 +43,7 @@ html {
 }
 
 .navbar {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -96,6 +96,7 @@ html {
   text-decoration: none;
   color: #c0c0c0;
   font-size: 2rem;
+  text-wrap: nowrap;
 }
 .navbar-collapse {
   box-shadow:
@@ -142,7 +143,7 @@ html {
     width: 100%;
   }
   100% {
-    display: none;
+    display: hidden;
     overflow-x: hidden;
     width: 0%;
     visibility: hidden;
@@ -169,8 +170,8 @@ main {
   display: grid;
   grid-template-rows: repeat(auto-fit, minmax(1fr, 200px));
   grid-column-gap: 1%;
-  padding-top: 10vh;
-  height: 90vh;
+  padding-top: 10dvh;
+  height: 90dvh;
   width: 100%;
   justify-items: center; /* Center horizontally */
   /* align-items: center; */
@@ -198,34 +199,38 @@ div {
     border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
   text-decoration: none;
-  &:focus{
+  &:focus {
     outline: none;
   }
 }
-.inline-block *{
+.inline-block * {
   display: inline-block;
 }
-input{
+input {
   color: black;
 }
 @media screen and (max-width: 768px) {
   body {
     flex-direction: column;
-  } 
+  }
   .navbar {
     height: auto;
-    width: 80%;
+    width: 100%;
     flex-direction: row;
   }
-  .navbar-nav{
+  .navbar-nav {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
   }
-  .navbar-collapse{
-        border-radius: 0;
+  .navbar-collapse {
+    border-radius: 0;
+    overflow-x: auto;
+    margin: 0;
+    flex-grow: 1;
+    height: 100%;
   }
-  .nav-item{
+  .nav-item {
     min-width: 0;
   }
   .container {
@@ -236,6 +241,13 @@ input{
   main {
     width: 100%;
     height: 80%;
+    margin: 0;
+    padding: 20px 0;
+  }
+  .form,
+  form{
+    max-width: 400px;
+    flex-grow: 1;
   }
   footer {
     display: none;
@@ -244,8 +256,20 @@ input{
     width: 100%;
     padding: 1%;
   }
-
-  .navbar-brand{
-    width: min-content;
+  .navbar-margin {
+    margin: 0;
+    padding: 0;
+  }
+  .navbar-brand {
+    display:none;
+  }
+  .navbar-item{
+    font-size: 0.25rem;
+  }
+  .navbar-nav li:last-child {
+      display: none;
+  }
+  header {
+    width: 100dvw;
   }
 }

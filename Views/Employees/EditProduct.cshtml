@@ -8,41 +8,23 @@
   <label for="Description">Description</label>
   <input type="text" id="Description" name="Description" value="@Model.Description">
   <label for="Price">Price</label>
-  <input type="number" id="Price" name="Price" value="@Model.Price" onclick="PriceGreaterThanZero(event)">
+  <input type="number" id="Price" name="Price" value="@Model.Price">
   <label for="Stock">Stock</label>
-  <input type="text" id="Stock" name="Stock" value="@Model.Stock"
-  onkeydown="isNumber(event)">
+  <input type="number" id="Stock" name="Stock" value="@Model.Stock"
+  onpasting="return false"
+  onclick="twoDecemal(event)">
   <label for="oldPrice">Old Price</label>
-  <input type="text" id="oldPrice" name="oldPrice" value="@Model.OldPrice" 
-  onblur="greaterThanZero(event)" 
-  onkeypress="isNumber(event)" 
-  onfocus="cls(event)">
+  <input type="number" id="oldPrice" name="oldPrice" value="@Model.OldPrice" 
+  onpasting="return false"
+  onclick="twoDecemal(event)">
 <input type="submit" class="btn btn-primary" value=Update>
 </form>
 
 <script>
-  'use strict' // strict mode
-  function cls(event){
-    event.target.value = ''
-  }
-  function PriceGreaterThanZero(event){
-    if(Number(event.target.value) < 0){
-      event.preventDefault()
-    }
-  }
-  function greaterThanZero(event){
-    if((Number(event.target.value) < 0 
-      && Number(event.target.value) !== -1) ||
-      (isNaN(event.target.value) && event.target.value)){
-      
-      event.target.focus()
-      event.preventDefault()
-    }
-  }
-  function isNumber(event){
-    event.target.value = event.target.value.trim(); // string function
-    if(!eval("!isNaN(event.key) || event.key === 'Backspace' ||  !isNaN(event.target.value + event.key)")){
-        event.preventDefault()
+  function twoDecemal(x){
+    if(x.target.value.includes('.')){
+      const [int, dec] = x.target.value.split('.');
+      x.target.value = `${int}.${dec.slice(0, 2)}`;
     }
   }
   const form = document.querySelector('form');
@@ -56,18 +38,16 @@
   }));
 
   document
-    // querySelector
     .querySelector("form")
-    // add event addEventListener
-    // event
     .addEventListener('submit', Add)
-  // hosting 
+
+
   function Add(event){
-    // get file name from input
    const name  = document.querySelector('#Name').value;
     const description = document.querySelector('#Description').value;
-    if ((/^\s*$/).test(name) || (/^\s*$/).test(description)){
-      alert('Name and Description must not be empty');
+    if ((/^\s*$/).test(name) || (/^\s*$/).test(description)
+    || (/^\s/.test(name)) || (/^\s/).test(description)){
+      alert('Name and Description must not be empty or start with a space');
       event.preventDefault();
       event.stopPropagation();
       return;
@@ -80,9 +60,8 @@
       return;
     }
     const oldPrice = document.querySelector('#oldPrice').value;
-    debugger
-    if ((oldPrice.charAt(0) === '-' && oldPrice[1] !== "1")
-      || isNaN(oldPrice) || oldPrice === ""){
+
+    if (Number(oldPrice) < 0 && !(Number(oldPrice) === -1) ){
       alert('Old price must be greater than or equal to 0');
       event.preventDefault(); // preventDefault
       event.stopPropagation();

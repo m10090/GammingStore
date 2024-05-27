@@ -55,10 +55,10 @@ public partial class EmployeesController : Controller {
   [HttpPost]
   [Authorize(Roles = "Admin")]
   public IActionResult AddUser([FromForm] UserDTO user) {
+    user.Username = user.Username.ToLower();
     if (db.users.Any(u => u.Username == user.Username)) {
       return BadRequest("Username already exists");
     }
-    user.Username = user.Username.ToLower();
     db.users.Add(user);
     user.Password = passwordHasher.HashPassword(user, user.Password);
     db.SaveChanges();
