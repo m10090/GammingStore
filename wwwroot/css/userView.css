@@ -7,10 +7,9 @@ form,
   width: 35%;
   max-height: 100%;
   backdrop-filter: blur(17.1px);
--webkit-backdrop-filter: blur(17.1px);;
+  -webkit-backdrop-filter: blur(17.1px);
   padding: 20px 0px;
   height: min-content;
-  overflow:auto;
 }
 
 #register input,

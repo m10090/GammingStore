@@ -12,7 +12,7 @@
 @foreach(var item in Model){
     <div class="card">
         @{
-            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex($@"{item.ProductId.ToString()}\.");
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex($@"/{item.ProductId.ToString()}\.");
             images.ForEach(f => {
                 if (regex.IsMatch(f)){
                     filePath =  f;

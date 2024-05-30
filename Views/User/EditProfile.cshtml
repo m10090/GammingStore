@@ -3,12 +3,12 @@
 }
 @model gammingStore.Models.User
 
-<div container>
+<div id ="edit">
 <div>
 <h1>Edit User</h1>
 <h2> sorry username cannot be changed</h2>
 </div>
-<form method="post" >
+<form method="post" style="width: 100%">
     <label for="FullName">Full Name</label>
     <input type="text" id="FullName" name="FullName" value="@Model.FullName" required>
     <label for="Email">Email</label>
@@ -40,3 +40,13 @@
     }
   }
 </script>
+<style>
+  @("@")media (max-width: 768px){
+    form{
+      width: 100%;
+    }
+    #edit{
+      height: 100%;
+    }
+  }
+</style>

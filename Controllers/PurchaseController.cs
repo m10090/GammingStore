@@ -8,16 +8,46 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace gammingStore.Controllers;
 
+internal class Payment_ {
+  string apiKey;
+  string HMAC;
+  string privateKey;
+  string publicKey;
+  int integrationId;
+
+  public Payment_(string apiKey, string HMAC, string privateKey,
+                  string publicKey, int integrationId) {
+    this.apiKey = apiKey;
+    this.HMAC = HMAC;
+    this.privateKey = privateKey;
+    this.publicKey = publicKey;
+    this.integrationId = integrationId;
+  }
+
+  public Payment createPayment(List<CartDTO> cart, int amount, int userId) {
+    return new Payment(cart, apiKey ?? "", HMAC ?? "", privateKey ?? "",
+                       publicKey ?? "", (int)amount * 100, integrationId,
+                       userId);
+  }
+}
+
 [Authorize]
 public class PurchaseController : Controller {
   private readonly DB db;
   private readonly IConfiguration configuration;
   private readonly Dictionary<string, Payment> payments =
       new Dictionary<string, Payment>();
+  Payment_ payment_;
 
   public PurchaseController(DB db, IConfiguration configuration) {
     this.db = db;
     this.configuration = configuration;
+    this.payment_ =
+        new Payment_(configuration["Payment:ApiKey"] ?? "",
+                     configuration["Payment:HMAC"] ?? "",
+                     configuration["Payment:PrivateKey"] ?? "",
+                     configuration["Payment:PublicKey"] ?? "",
+                     Convert.ToInt32(configuration["Payment:IntegrationId"]));
   }
 
   public IActionResult Index() { return View(); }
@@ -101,11 +131,6 @@ public class PurchaseController : Controller {
         User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
             ?.Value);
     // get random transcation id that is unique
-    var publicKey = configuration["Paymob:PublicKey"];
-    var privateKey = configuration["Paymob:PrivateKey"];
-    var apiKey = configuration["Paymob:ApiKey"];
-    var integrationId = Convert.ToInt32(configuration["Paymob:IntegrationId"]);
-    var HMAC = configuration["Paymob:HMAC"];
     double amount = 0;
     foreach (var item in cart) {
       var product = db.products.FirstOrDefault(p => p.ProductId == item.id);
@@ -125,9 +150,7 @@ public class PurchaseController : Controller {
       db.products.Update(product);
       Console.WriteLine(amount);
     }
-    Payment payment =
-        new Payment(cart, apiKey ?? "", HMAC ?? "", privateKey ?? "",
-                    publicKey ?? "", (int)amount * 100, integrationId, userId);
+    Payment payment = payment_.createPayment(cart, (int)amount * 100, userId);
     var link = await payment.MakePayment();
     payments.Add(payment.clientSecret, payment);
     return Ok(new { link = await payment.MakePayment() });

@@ -38,8 +38,8 @@
       return;
     }
     const price = document.querySelector('#Price').value;
-    if(Number(price) <= 0){
-      alert('Price must be greater than 0');
+    if(Number(price) < 0){
+      alert('Price must be greater than or equal 0');
       event.preventDefault();
       event.stopPropagation();
       return;

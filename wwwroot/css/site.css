@@ -213,6 +213,12 @@ input {
   body {
     flex-direction: column;
   }
+
+  #register,
+  form,
+  .form {
+  overflow:auto;
+  }
   .navbar {
     height: auto;
     width: 100%;
@@ -231,7 +237,9 @@ input {
     height: 100%;
   }
   .nav-item {
-    min-width: 0;
+    font-size: 0.5rem;
+
+    min-width: max-content;
   }
   .container {
     padding-top: 0;

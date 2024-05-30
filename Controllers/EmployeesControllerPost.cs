@@ -42,7 +42,7 @@ public partial class EmployeesController : Controller {
     var productObj = db.products.Add(productRequest).Entity;
     // rename image in wwwroot/images/{id}
     db.SaveChanges();
-    Regex regex = new Regex($@"{id.ToString()}\.");
+    Regex regex = new Regex($@"/{id.ToString()}\.");
     Directory.GetFiles("wwwroot/images").ToList().ForEach(f => {
       if (regex.IsMatch(f)) {
         System.IO.File.Move(
